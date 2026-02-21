@@ -1,0 +1,13 @@
+# Deploy Cats vs Dogs inference API (M4).
+# Local: IMAGE=cats-dogs-api MODEL_DIR=../models docker-compose -f deployment/docker-compose.yml up -d
+# CI: IMAGE=ghcr.io/owner/repo:latest MODEL_DIR=./models docker-compose up -d
+services:
+  api:
+    image: ${IMAGE:-ghcr.io/adnan-bits/mlops-assignment-2:latest}
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/app/models/baseline.pt
+    volumes:
+      - ${MODEL_DIR:-../models}:/app/models:ro
+    restart: unless-stopped

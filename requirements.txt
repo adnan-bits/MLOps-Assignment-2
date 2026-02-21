@@ -1,0 +1,19 @@
+# Inference API
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+requests==2.31.0
+
+# ML
+torch==2.2.0
+torchvision==0.17.0
+Pillow==10.2.0
+numpy==1.26.4
+scikit-learn==1.4.0
+matplotlib==3.8.2
+
+# Experiment tracking
+mlflow==2.11.0
+
+# Optional: metrics (M5)
+# prometheus-client==0.19.0

@@ -1,0 +1,25 @@
+# DVC pipeline: prepare data -> train
+# Run: dvc repro (after dvc init and placing data in data/raw)
+stages:
+  prepare_data:
+    cmd: python scripts/prepare_data.py
+    deps:
+      - data/raw
+      - scripts/prepare_data.py
+      - src/data/preprocess.py
+    outs:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - data/processed/test.csv
+      - data/processed/meta.json
+
+  train:
+    cmd: python scripts/train.py --epochs 3 --batch-size 64
+    deps:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - scripts/train.py
+      - src/model/cnn.py
+      - src/model/dataset.py
+    outs:
+      - models/baseline.pt

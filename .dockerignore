@@ -1,0 +1,22 @@
+# Unneeded for inference image
+.git
+.github
+.dvc
+.mplconfig
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+*.egg-info
+venv
+.venv
+env
+.gitignore
+.dockerignore
+*.md
+data/
+mlruns/
+tests/
+scripts/
+dvc.yaml
+*.pdf

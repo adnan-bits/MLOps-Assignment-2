@@ -1,0 +1,9 @@
+# Testing
+pytest==8.0.0
+pytest-cov==4.1.0
+
+# Data download (optional; for scripts/download_data.py)
+kaggle==1.6.12
+
+# Include main deps for local dev
+-r requirements.txt

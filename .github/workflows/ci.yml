@@ -34,11 +34,11 @@ jobs:
         run: |
           mkdir -p models
           python -c "
-from src.model.cnn import get_model
-import torch
-m = get_model()
-torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt')
-"
+          from src.model.cnn import get_model
+          import torch
+          m = get_model()
+          torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt')
+          "
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v4

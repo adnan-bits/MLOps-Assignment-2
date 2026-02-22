@@ -34,11 +34,11 @@ jobs:
         run: |
           mkdir -p models
           python -c "
-from src.model.cnn import get_model
-import torch
-m = get_model()
-torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt')
-"
+          from src.model.cnn import get_model
+          import torch
+          m = get_model()
+          torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt')
+          "
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
@@ -54,6 +54,9 @@ torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt
       packages: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set image name to lowercase
+        run: echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -92,6 +95,9 @@ torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set image name to lowercase
+        run: echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Download model artifact
         uses: actions/download-artifact@v4
         with:
@@ -109,6 +115,9 @@ torch.save({'state_dict': m.state_dict(), 'num_classes': 2}, 'models/baseline.pt
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest MODEL_DIR=${{ github.workspace }}/models docker compose -f deployment/docker-compose.yml up -d
           sleep 10
+
+      - name: Install Pillow for smoke test image generation
+        run: python3 -m pip install --quiet Pillow
 
       - name: Smoke test
         run: |

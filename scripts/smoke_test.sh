@@ -15,14 +15,13 @@ if ! echo "$resp" | grep -q '"status":"ok"'; then
 fi
 echo "Health OK"
 
-# Prediction: use provided image or create a minimal test image
+# Prediction: use provided image or create a minimal test image (Pillow only, no numpy)
 if [[ -z "$IMAGE_FILE" || ! -f "$IMAGE_FILE" ]]; then
   IMAGE_FILE="${TMPDIR:-/tmp}/smoke_test_$$.jpg"
   python3 -c "
 from PIL import Image
-import numpy as np
-img = np.random.randint(0, 256, (224, 224, 3), dtype=np.uint8)
-Image.fromarray(img).save('$IMAGE_FILE')
+img = Image.new('RGB', (224, 224), color=(128, 128, 128))
+img.save('$IMAGE_FILE')
 "
   trap "rm -f $IMAGE_FILE" EXIT
 fi

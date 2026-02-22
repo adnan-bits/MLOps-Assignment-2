@@ -116,6 +116,9 @@ jobs:
           IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest MODEL_DIR=${{ github.workspace }}/models docker compose -f deployment/docker-compose.yml up -d
           sleep 10
 
+      - name: Install Pillow for smoke test image generation
+        run: python3 -m pip install --quiet Pillow
+
       - name: Smoke test
         run: |
           chmod +x scripts/smoke_test.sh

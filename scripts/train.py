@@ -47,11 +47,18 @@ def main():
     args = parse_args()
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        device = torch.device("mps")  # Apple Silicon (M1/M2/M3/M4)
+    else:
+        device = torch.device("cpu")
+    print(f"Using device: {device}")
 
     train_ds = CatsDogsDataset(args.train_csv, augment=True)
     val_ds = CatsDogsDataset(args.val_csv, augment=False)
     use_cuda = torch.cuda.is_available()
+
     train_loader = DataLoader(
         train_ds, batch_size=args.batch_size, shuffle=True, num_workers=0, pin_memory=use_cuda
     )

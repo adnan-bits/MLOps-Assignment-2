@@ -1,0 +1,39 @@
+# Conda environment for MLOps Assignment 2
+# Create: conda env create -f environment.yml
+# Update: conda env update -f environment.yml --prune
+
+name: mlops-assignment-2
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - pip
+
+  # Inference API
+  - pip:
+    - fastapi==0.109.2
+    - "uvicorn[standard]==0.27.1"
+    - python-multipart==0.0.9
+    - requests==2.31.0
+
+  # ML
+  - pip:
+    - torch==2.2.0
+    - torchvision==0.17.0
+    - Pillow==10.2.0
+    - numpy==1.26.4
+    - scikit-learn==1.4.0
+    - matplotlib==3.8.2
+
+  # Experiment tracking
+  - pip:
+    - mlflow==2.11.0
+
+  # Dev / testing
+  - pip:
+    - pytest==8.0.0
+    - pytest-cov==4.1.0
+    - kaggle==1.6.12

@@ -14,11 +14,31 @@ End-to-end MLOps pipeline for binary image classification (Cats vs Dogs) for a p
 
 ## Quick start
 
-1. Clone and install: `pip install -r requirements.txt` (use a venv).
-2. **Data:** Place images in `data/raw` with subdirs `Cat/` and `Dog/` (or `cat/`/`dog/`; `train/cat/`, `train/dog/` also supported). Then run `python scripts/prepare_data.py` to create train/val/test splits in `data/processed/`.
-3. **DVC:** `dvc init` (optional). Reproduce pipeline: `dvc repro` (creates `data/processed/` with train/val/test splits).
-4. Run API: `uvicorn src.api.main:app --host 0.0.0.0 --port 8000` (or Docker). **Docker:** `docker build -t cats-dogs-api .` then `docker run -p 8000:8000 -v $(pwd)/models:/app/models cats-dogs-api`. Then `curl http://localhost:8000/health` and `curl -X POST -F "file=@image.jpg" http://localhost:8000/predict`.
-5. Run tests: `python -m pytest tests/ -v` (from repo root).
+**Using conda env `ai` (in project root, with `ai` already activated):**
+
+```bash
+# 1. Install deps (if not already)
+pip install -r requirements.txt -r requirements-dev.txt
+
+# 2. Run tests
+python -m pytest tests/ -v
+
+# 3. Data: download from Kaggle (needs ~/.kaggle/kaggle.json) or put images in data/raw (Cat/, Dog/ or train/cat/, train/dog/)
+python scripts/download_data.py
+python scripts/prepare_data.py
+
+# 4. Train (writes models/baseline.pt and MLflow runs in mlruns/)
+python scripts/train.py --epochs 5
+
+# 5. Start API (from repo root)
+uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+# In another terminal: curl http://localhost:8000/health
+# curl -X POST -F "file=@path/to/image.jpg" http://localhost:8000/predict
+```
+
+**Alternative (venv):** `pip install -r requirements.txt` in a venv, then same steps 2–5.
+
+**Docker:** `docker build -t cats-dogs-api .` then `docker run -p 8000:8000 -v $(pwd)/models:/app/models cats-dogs-api`.
 
 ## Assignment modules
 

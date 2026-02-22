@@ -51,9 +51,6 @@ Thumbs.db
 .dvc/cache/
 .dvc/tmp/
 
-# Model artifacts (large; can be DVC-tracked)
-models/*
-!models/.gitkeep
 
 # Logs and temp
 *.log
